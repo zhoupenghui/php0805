@@ -1,0 +1,110 @@
+<extend name="Common:edit"/>
+<block name="css">
+    <link href="__UPLOADIFY__/uploadify.css" rel="stylesheet" type="text/css" />
+</block>
+<block name="form">
+    <form method="post" action="{:U()}" enctype="multipart/form-data">
+        <table cellspacing="1" cellpadding="3" width="100%">
+            <tr>
+                <td class="label">品牌名称</td>
+                <td>
+                    <!--
+                        //目的:根据每个字段的注解的表单类型,生成不同的表单元素
+                            //获取每个注解的表单类型
+                    --><input type="text" name="name" maxlength="60" value="{$name}"> <span
+                        class="require-field">*</span>
+                </td>
+            </tr>
+            <tr>
+                <td class="label">品牌LOGO</td>
+                <td>
+                    <!--
+                        //目的:根据每个字段的注解的表单类型,生成不同的表单元素
+                            //获取每个注解的表单类型
+                    --><input type="file" name="upload-logo" id="upload-logo"/>
+                    <input type="hidden" name="logo" class="logo" value="{$logo}"/>
+                    <div class="upload-img-box" style="display: {$logo?'block':none}">
+                        <div class="upload-pre-item" >
+                            <img src="__BRAND__/{$logo}">
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="label">品牌网址</td>
+                <td>
+                    <!--
+                        //目的:根据每个字段的注解的表单类型,生成不同的表单元素
+                            //获取每个注解的表单类型
+                    --><input type="text" name="url" maxlength="60" value="{$url}"> <span class="require-field">*</span>
+                </td>
+            </tr>
+            <tr>
+                <td class="label">品牌描述</td>
+                <td>
+                    <!--
+                        //目的:根据每个字段的注解的表单类型,生成不同的表单元素
+                            //获取每个注解的表单类型
+                    --><textarea name="intro" cols="60" rows="4">{$intro}</textarea>
+                    <span class="require-field">*</span>
+                </td>
+            </tr>
+            <tr>
+                <td class="label">是否显示</td>
+                <td>
+                    <!--
+                        //目的:根据每个字段的注解的表单类型,生成不同的表单元素
+                            //获取每个注解的表单类型
+                    --><input type="radio" class="status" name="status" value="1"/> 是<input type="radio" class="status"
+                                                                                            name="status" value="0"/> 否
+                    <span class="require-field">*</span>
+                </td>
+            </tr>
+            <tr>
+                <td class="label">排序</td>
+                <td>
+                    <!--
+                        //目的:根据每个字段的注解的表单类型,生成不同的表单元素
+                            //获取每个注解的表单类型
+                    --><input type="text" name="sort" maxlength="60" value="{$sort|default=20}"> <span
+                        class="require-field">*</span>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center"><br/>
+                    <input type="hidden" name="id" value="{$id}"/>
+                    <input type="submit" class="button" value=" 确定 "/>
+                    <input type="reset" class="button" value=" 重置 "/>
+                </td>
+            </tr>
+
+        </table>
+    </form>
+</block>
+<block name="js">
+    <script type="text/javascript" src="__UPLOADIFY__/jquery.uploadify.min.js" ></script>
+    <script type="text/javascript" >
+        $(function() {
+            $("#upload-logo").uploadify({
+                height        : 25,//指定插件的宽高
+                width         : 145,
+                'buttonText' : '选择图片',//定义上传按钮的文字
+                'fileSizeLimit' : '100000KB',//指定文件上传的大小
+                swf           : '__UPLOADIFY__/uploadify.swf',//指定swf的地址
+                uploader      : '{:U("Upload/index")}',//在服务器上处理上传的代码
+//                'fileObjName' : 'the_files',//上传文件时,name的名字  $_FIELDS['the_files'], ----它有一个默认值Filedata,搜易这里不必指定,直接用$_FIELDS['Filedata']获取文件信息
+                'formData'      : {'dir' : 'brand'},//通过post方式,传入额外的参数---参数(上传文件的目录)
+                'multi'    : true,//是否支持多文件上传
+                'onUploadError' : function(file, errorCode, errorMsg, errorString) {
+                    alert('该文件上传失败,错误为: ' + errorString);
+                },
+                'onUploadSuccess' : function(file, data, response) {
+                    //上传成功后返回data,就包括文件上传后的路径,把该路劲放到.logo的隐藏域中,与数据一起保存到数据库中
+                    $(".logo").val(data);
+                    $(".upload-img-box").show();//当返回值时,显示
+                    $(".upload-img-box img").attr("src","__BRAND__/"+data);//要显示图片的路径
+                }
+            });
+        });
+    </script>
+</block>

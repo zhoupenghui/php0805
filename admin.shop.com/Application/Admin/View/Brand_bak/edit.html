@@ -1,0 +1,52 @@
+<extend name="Common:edit"/>
+<block name="form">
+    <form method="post" action="{:U()}">
+        <table cellspacing="1" cellpadding="3" width="100%">
+            <tr>
+                <td class="label">品牌名称</td>
+                <td>
+                    <input type="text" name="name"  value="{$name}"/>
+                    <span class="require-field">*</span>
+                </td>
+            </tr>
+            <tr>
+                <td class="label">品牌LOGO</td>
+                <td>
+                    <input type="file" name="logo" />
+                </td>
+            </tr><tr>
+            <td class="label">品牌URL</td>
+            <td>
+                <input type="text" name="url"  value="{$url}"/>
+                <span class="require-field">*</span>
+            </td>
+        </tr>
+            <tr>
+                <td class="label">描述</td>
+                <td>
+                    <textarea  name="intro" cols="60" rows="4"  >{$intro}</textarea>
+                </td>
+            </tr>
+            <tr>
+                <td class="label">排序</td>
+                <td>
+                    <input type="text" name="sort" maxlength="40" value="{$sort|default=20}" size="15" value="20" />
+                </td>
+            </tr>
+            <tr>
+                <td class="label">是否显示</td>
+                <td>
+                    <input type="radio" class="status" name="status" value="1" /> 是
+                    <input type="radio" class="status" name="status" value="0"  /> 否
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center"><br />
+                    <input type="hidden" name="id" value="{$id}" />
+                    <input type="submit" class="button ajax-post" value=" 确定 " />
+                    <input type="reset" class="button" value=" 重置 " />
+                </td>
+            </tr>
+        </table>
+    </form>
+</block>
